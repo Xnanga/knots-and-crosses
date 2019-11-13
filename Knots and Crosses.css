@@ -1,0 +1,54 @@
+
+html {
+
+}
+
+body {
+    background-image: url("./background.jpg");
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    margin: auto;
+    margin-top: 40px;
+    background-color: white;
+    width: 400px;
+}
+
+tr {
+    height: 251.6px;
+}
+
+td {
+    padding: 0px;
+}
+
+#gameBoard {
+    background-image: url("./gameBoard.jpg");
+    height: 800px;
+    width: 800px;
+    margin: auto;
+    margin-top: 140px;
+}
+
+#scorePad {
+    position: relative;
+    right: 10px;
+    bottom: 500px;
+    width: 500px;
+    height: 500px;
+    background-color: gray;
+}
+
+.knotPlacement {
+    background-image: url("./redKnot.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.crossPlacement {
+    background-image: url("./blueCross.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
