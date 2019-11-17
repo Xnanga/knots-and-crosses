@@ -46,6 +46,50 @@ let view = {
             console.log("It is currently Crosses turn.");
 
         }
+    },
+
+    // Display a message to announce the winner.
+    displayWinner: function(winner) {
+
+        // If the winner is crosses.
+        if (winner == "crossesWin") {
+
+            // Display the crosses win message.
+            alert("Crosses win!");
+
+            // Increment the number of crosses wins by one.
+            model.crossesWins++;
+
+            // Update the scores displayed to the user.
+            this.displayScores();
+
+        // If the winner is knots.
+        } else if (winner == "knotsWin") {
+
+            // Display the crosses win message.
+            alert("Knots win!");
+
+            // Increment the number of knots wins by one.
+            model.knotsWins++;
+
+            // Update the scores displayed to the user.
+            this.displayScores();
+
+        }
+
+    },
+
+    // Update the displayed scores to the user whenever someone wins.
+    displayScores: function(result) {
+
+        // Sync the crosses wins held in the model object with the displayed crosses wins to the user.
+        let crossesScoreElement = document.getElementById("crossesWins");
+        crossesScoreElement.innerHTML = model.crossesWins;
+
+        // Sync the knots wins held in the model object with the displayed knots wins to the user.
+        let knotsScoreElement = document.getElementById("knotsWins");
+        knotsScoreElement.innerHTML = model.knotsWins;
+
     }
 
 };
@@ -53,33 +97,109 @@ let view = {
 // Object to handle the game state and base variables.
 let model = {
 
+    // Property to hold the winner, undefined on load.
+    gameWinner: undefined,
+
+    // Property to hold the number of times crosses has won.
+    crossesWins: 0,
+
+    // Property to hold the number of times knots has won.
+    knotsWins: 0,
+
+    // Property to hold the number of draws.
+    draws: 0,
+
+    // Property to hold the current turn, undefined until firstTurn function runs.
+    currentTurn: undefined,
+
     // Limit the boardsize to 9 cells.
     boardSize: 9,
 
     // An array of all cell positions on the board.
     boardPositions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
 
+    // An array to keep track of what positions have been filled with what on the board.
+    boardCurrentState: ["", "", "", "", "", "", "", "", "",],
+
     // Function to generate a random number to determine who gets the first turn.
     firstTurn: function() {
 
-    // Generate a random number between one and two.
-    (Math.floor(Math.random() * 2))
+        // Generate a random number between one and two.
+        let firstTurn = (Math.floor(Math.random() * 2));
+        return firstTurn;
 
     },
 
-    // Stores the current turn (is empty until the firstTurn function runs at startup.
-    currentTurn: undefined
+    // Checks every turn to see if either knots or crosses have won.
+    checkForRow: function() {
+
+            // If any winning comnbination is filled with crosses.
+           if ((this.boardCurrentState[0] == "cross" && this.boardCurrentState[1] == "cross" && this.boardCurrentState[2] == "cross") || 
+               (this.boardCurrentState[3] == "cross" && this.boardCurrentState[4] == "cross" && this.boardCurrentState[5] == "cross") || 
+               (this.boardCurrentState[6] == "cross" && this.boardCurrentState[7] == "cross" && this.boardCurrentState[8] == "cross") || 
+               (this.boardCurrentState[0] == "cross" && this.boardCurrentState[3] == "cross" && this.boardCurrentState[6] == "cross") || 
+               (this.boardCurrentState[1] == "cross" && this.boardCurrentState[4] == "cross" && this.boardCurrentState[7] == "cross") || 
+               (this.boardCurrentState[2] == "cross" && this.boardCurrentState[5] == "cross" && this.boardCurrentState[8] == "cross") || 
+               (this.boardCurrentState[0] == "cross" && this.boardCurrentState[4] == "cross" && this.boardCurrentState[8] == "cross") || 
+               (this.boardCurrentState[2] == "cross" && this.boardCurrentState[4] == "cross" && this.boardCurrentState[6] == "cross")) {
+
+                // Set the gameWinner to crosses.
+                this.gameWinner = "crosses";
+
+                // Tell the view object to display the crosses win message.
+                view.displayWinner("crossesWin");
+
+                console.log("A Winner Was Checked For!");
+
+            // If any winning comnbination is filled with knots.
+    } else if ((this.boardCurrentState[0] == "knot" && this.boardCurrentState[1] == "knot" && this.boardCurrentState[2] == "knot") || 
+               (this.boardCurrentState[3] == "knot" && this.boardCurrentState[4] == "knot" && this.boardCurrentState[5] == "knot") || 
+               (this.boardCurrentState[6] == "knot" && this.boardCurrentState[7] == "knot" && this.boardCurrentState[8] == "knot") || 
+               (this.boardCurrentState[0] == "knot" && this.boardCurrentState[3] == "knot" && this.boardCurrentState[6] == "knot") || 
+               (this.boardCurrentState[1] == "knot" && this.boardCurrentState[4] == "knot" && this.boardCurrentState[7] == "knot") || 
+               (this.boardCurrentState[2] == "knot" && this.boardCurrentState[5] == "knot" && this.boardCurrentState[8] == "knot") || 
+               (this.boardCurrentState[0] == "knot" && this.boardCurrentState[4] == "knot" && this.boardCurrentState[8] == "knot") || 
+               (this.boardCurrentState[2] == "knot" && this.boardCurrentState[4] == "knot" && this.boardCurrentState[6] == "knot")) {
+
+                // Set the gameWinner to knots.
+                this.gameWinner = "knots";
+
+                // Tell the view object to display the knots win message.
+                view.displayWinner("knotsWin");
+
+                console.log("A Winner Was Checked For!");
+
+         } else {
+
+            this.checkForDraw();
+
+         }
+    },
+
+    checkForDraw: function() {
+
+        let squareElements = document.getElementsByTagName("td");
+        let squareClasses = squareElements.className;
+
+        for (i = 0; i < squareClasses.length; i++) {
+
+            if (squareClasses[i] != "") {
+
+                model.draws++;
+
+            }
+
+        }
+
+    }
 
 };
 
 // To be run once page has finished loading.
 function init() {
 
-    // Runs the firstTurn function to determine who goes first.
-    model.firstTurn();
-
     // Sets the currentTurn property to the result of the random number generation.
-    model.currentTurn = model.firstTurn;
+    model.currentTurn = model.firstTurn();
 
     // Declare squareClicked as any cell in the grid.
     let squareClicked = document.getElementsByTagName("td");
@@ -110,6 +230,9 @@ function clickHandler(eventObj) {
         // Pass the id of the cell to the view object for display to the user.
         view.drawKnot(squareId);
 
+        // Pass a signal to the model object to store where a knot was placed.
+        model.boardCurrentState[squareId] = "knot";
+
         console.log(clickedSquare);
 
     // If the current turn equals anyting other than 0, it must be Crosses turn.
@@ -124,9 +247,16 @@ function clickHandler(eventObj) {
         // Pass the id of the cell to the view object for display to the user.
         view.drawCross(squareId);
 
+        // Pass a signal to the model object to store where a cross was placed.
+        model.boardCurrentState[squareId] = "cross";
+
         console.log(clickedSquare);
     }
+
+    model.checkForRow();
+
 }
+
 
 // Run init function on page load.
 onload = init();

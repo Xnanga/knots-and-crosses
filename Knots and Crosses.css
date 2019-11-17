@@ -1,8 +1,4 @@
 
-html {
-
-}
-
 body {
     background-image: url("./background.jpg");
 }
@@ -16,6 +12,10 @@ h1 {
     width: 400px;
 }
 
+h2 {
+    font-size: 40px;
+}
+
 tr {
     height: 251.6px;
 }
@@ -24,8 +24,29 @@ td {
     padding: 0px;
 }
 
+li {
+    display: flex;
+    list-style: none;
+    float: left;
+    width: 100%;
+    font-size: 30px;
+    padding-bottom: 50px;
+}
+
+span {
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+button {
+    display: block;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 #gameBoard {
-    background-image: url("./gameBoard.jpg");
+    background-image: url("./gameBoard.png");
     height: 800px;
     width: 800px;
     margin: auto;
@@ -33,12 +54,18 @@ td {
 }
 
 #scorePad {
-    position: relative;
-    right: 10px;
-    bottom: 500px;
-    width: 500px;
-    height: 500px;
-    background-color: gray;
+    position: absolute;
+    top: 492px;
+    width: 475px;
+    height: 555px;
+    background-image: url("./scorePad.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#scorePadText {
+    padding-left: 20px;
+    width: 100%;
 }
 
 .knotPlacement {
@@ -51,4 +78,10 @@ td {
     background-image: url("./blueCross.png");
     background-repeat: no-repeat;
     background-position: center;
+}
+
+#currentTurn {
+    font-size: 30px;
+    text-align: center;
+    background-color: white;
 }
